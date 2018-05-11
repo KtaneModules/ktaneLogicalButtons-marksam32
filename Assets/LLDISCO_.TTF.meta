@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 61339f1be23221a4a83550207fcfabc6
+timeCreated: 1524392155
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: LLDisco
+  fontNames:
+  - LLDisco
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
