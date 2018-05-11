@@ -277,7 +277,7 @@ public class LogicalButtonsScript : MonoBehaviour {
     {
         command = command.ToLowerInvariant().Trim();
         var pieces = command.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
-;
+
         if (pieces[0] != "press" || pieces.Length < 2 || pieces.Length != pieces.Distinct().Count())
         {
             return null;
