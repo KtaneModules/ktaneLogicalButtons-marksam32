@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 61339f1be23221a4a83550207fcfabc6
-timeCreated: 1524392155
+guid: 107a74ae98e9cbe43884279e7eeb3d57
+timeCreated: 1526113195
 licenseType: Free
 TrueTypeFontImporter:
   serializedVersion: 4
@@ -9,9 +9,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: LLDisco
+  fontName: Repetition Scrolling
   fontNames:
-  - LLDisco
+  - Repetition Scrolling
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

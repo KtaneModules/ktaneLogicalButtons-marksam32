@@ -47,7 +47,7 @@ public class LogicalButtonsHelper
         var button = this.buttons[index];
         var colorSolve = this.ColorSolve(index);
         var labelSolve = this.LabelSolve(index, stage);
-        return string.Format("{0}({1}) and has the label {2}({3}) with operator {4} which returns {5}",
+        return string.Format("{0}({1}) {4} {2}({3}) == {5}",
             button.Color.ToString(),
             colorSolve,
             button.Label,

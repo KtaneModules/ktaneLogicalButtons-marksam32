@@ -78,7 +78,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             if (!this.HasSolution)
             {
                 Module.HandleStrike();
-                this.ResetStageAndInitLogic();
+                this.InitLogic();
             }
             else
             {
@@ -101,7 +101,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             if (!this.HasSolution)
             {
                 Module.HandleStrike();
-                this.ResetStageAndInitLogic();
+                this.InitLogic();
             }
             else
             {
@@ -125,7 +125,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             if (!this.HasSolution)
             {
                 Module.HandleStrike();
-                this.ResetStageAndInitLogic();
+                this.InitLogic();
             }
             else
             {
@@ -149,7 +149,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             {
                 Debug.LogFormat("[Logical Buttons #{0}] Pressed the operator screen while had solution. Strike!", this._moduleId);
                 Module.HandleStrike();
-                this.ResetStageAndInitLogic();
+                this.InitLogic();
             }
             else
             {
@@ -164,17 +164,6 @@ public class LogicalButtonsScript : MonoBehaviour {
 
             return false;
         };
-    }
-
-    private void ResetStageAndInitLogic()
-    {
-        this.stage = 1;
-        foreach (var stageLight in this.StageLights)
-        {
-            stageLight.sharedMaterial = LightOffMat;
-        }
-
-        this.InitLogic();    
     }
 
     private void InitLogic()
@@ -223,7 +212,7 @@ public class LogicalButtonsScript : MonoBehaviour {
         if (button.IsPressed || (button.Index + 1 != this.solution[this.pressCount - 1]))
         {
             Debug.LogFormat("[Logical Buttons #{2}] Pressed incorrect button {0}, expected button {1}. Strike!", button.Index + 1, this.solution[this.pressCount - 1], this._moduleId);
-            this.ResetStageAndInitLogic();
+            this.InitLogic();
             Module.HandleStrike();
             return;
         }
@@ -251,6 +240,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             {
                 Debug.LogFormat("[Logical Buttons #{0}] Completed stage {1}.", this._moduleId, this.stage);
                 this.stage++;
+                Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, Module.transform);
                 this.InitLogic();
             }
         }
@@ -260,7 +250,7 @@ public class LogicalButtonsScript : MonoBehaviour {
     {
         foreach (var button in buttons)
         {
-            Debug.LogFormat("[Logical Buttons #{0}] Button {1} is {2}", this._moduleId, button.Index + 1, this.helper.DebugStringButtons(button.Index, this.stage));
+            Debug.LogFormat("[Logical Buttons #{0}] Button {1}: {2}", this._moduleId, button.Index + 1, this.helper.DebugStringButtons(button.Index, this.stage));
         }
 
         Debug.LogFormat("[Logical Buttons #{0}] Buttons should be pressed in the order: {1}.", this._moduleId, this.helper.DebugOrderString(this.stage));
