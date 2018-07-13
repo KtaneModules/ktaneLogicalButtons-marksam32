@@ -47,6 +47,15 @@ public class LogicalButtonsScript : MonoBehaviour {
 
     private int pressCount;
 
+    string[] correct =
+    {
+        "GOOD",
+        "NEAT",
+        "NICE",
+        "OKAY",
+        "COOL",
+        "YES"
+    };
 
     // Use this for initialization
     void Start ()
@@ -174,9 +183,9 @@ public class LogicalButtonsScript : MonoBehaviour {
         }
 
         // Debuging purposes
-        //this.buttons[0] = new LogicalButton(0, ButtonColor.Blue, Constants.NoString);
-        //this.buttons[1] = new LogicalButton(1, ButtonColor.Blue, Constants.HmmmString);
-        //this.buttons[2] = new LogicalButton(2, ButtonColor.Blue, Constants.ButtonString);
+        //this.buttons[0] = new LogicalButton(0, ButtonColor.Green, Constants.NoString);
+        //this.buttons[1] = new LogicalButton(1, ButtonColor.Grey, Constants.WaitString);
+        //this.buttons[2] = new LogicalButton(2, ButtonColor.Purple, Constants.WaitString);
         //this.gateOperator = LogicalGateOperatorFactory.Create(Constants.XorOperatorString);
         //this.stage = 3;
 
@@ -234,7 +243,7 @@ public class LogicalButtonsScript : MonoBehaviour {
                 Btn1Renderer.sharedMaterial = materials[2];
                 Btn2Renderer.sharedMaterial = materials[2];
                 Btn3Renderer.sharedMaterial = materials[2];
-                OperatorTxt.text = "";
+                OperatorTxt.text = correct[UnitRandom.Range(0, correct.Length)];
             }
             else
             {
