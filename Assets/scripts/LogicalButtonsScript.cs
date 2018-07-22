@@ -57,13 +57,18 @@ public class LogicalButtonsScript : MonoBehaviour {
         "YES"
     };
 
+    void Activate()
+    {
+        this.stage = 1;
+        this.InitLogic();
+        this.InitButtons();
+    }
+
     // Use this for initialization
     void Start ()
     {
         _moduleId = _moduleIdCounter++;
-        this.stage = 1;
-        this.InitLogic();
-        this.InitButtons();
+        Module.OnActivate += Activate;
     }
 	
 	// Update is called once per frame
