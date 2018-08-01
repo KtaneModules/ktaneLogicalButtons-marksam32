@@ -57,11 +57,20 @@ public class LogicalButtonsScript : MonoBehaviour {
         "YES"
     };
 
+    //Color Blind:
+    public TextMesh ColorBlindIndicatorTop;
+    public TextMesh ColorBlindIndicatorLeft;
+    public TextMesh ColorBlindIndicatorRight;
+
+
     void Activate()
     {
         this.stage = 1;
         this.InitLogic();
         this.InitButtons();
+        ColorBlindIndicatorLeft.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
+        ColorBlindIndicatorRight.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
+        ColorBlindIndicatorTop.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
     }
 
     // Use this for initialization
@@ -210,6 +219,10 @@ public class LogicalButtonsScript : MonoBehaviour {
         Btn3Renderer.sharedMaterial = materials[Constants.ButtonColors.IndexOf(buttons[2].Color)];
         Debug.LogFormat("[Logical Buttons #{0}] STAGE: {1}", this._moduleId, this.stage);
         this.DebugMessage();
+
+        ColorBlindIndicatorTop.text = buttons[0].Color.ToString();
+        ColorBlindIndicatorLeft.text = buttons[1].Color.ToString();
+        ColorBlindIndicatorRight.text = buttons[2].Color.ToString();
     }
     
     private bool HasSolution
@@ -245,6 +258,9 @@ public class LogicalButtonsScript : MonoBehaviour {
                 Btn1Text.text = "";
                 Btn2Text.text = "";
                 Btn3Text.text = "";
+                ColorBlindIndicatorTop.text = "Green";
+                ColorBlindIndicatorLeft.text = "Green";
+                ColorBlindIndicatorRight.text = "Green";
                 Btn1Renderer.sharedMaterial = materials[2];
                 Btn2Renderer.sharedMaterial = materials[2];
                 Btn3Renderer.sharedMaterial = materials[2];
@@ -275,12 +291,19 @@ public class LogicalButtonsScript : MonoBehaviour {
 
     // Twitch plays:
 
-    public string TwitchHelpMessage = "To press buttons, use !{0} press 1 2 3 or !{0} press 1 2 or !{0} press 1. To press the operator screen, use !{0} press operator.";
+    public string TwitchHelpMessage = "To press buttons, use !{0} press 1 2 3 or !{0} press 1 2 or !{0} press 1. To press the operator screen, use !{0} press operator. Enable colorblind mode using !{0} colorblind.";
 
     internal KMSelectable[] ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();
         var pieces = command.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+        if (command.Equals("colorblind"))
+        {
+            ColorBlindIndicatorTop.gameObject.SetActive(true);
+            ColorBlindIndicatorLeft.gameObject.SetActive(true);
+            ColorBlindIndicatorRight.gameObject.SetActive(true);          
+        }
 
         if (pieces[0] != "press" || pieces.Length < 2 || pieces.Length != pieces.Distinct().Count())
         {
@@ -298,18 +321,31 @@ public class LogicalButtonsScript : MonoBehaviour {
         {
             switch (pieces[i])
             {
+                case "one":
+                case "top":
+                case "first":
                 case "1":
                     list.Add(Btn1);
                     break;
 
+                case "two":
+                case "left":
+                case "second":                
                 case "2":
                     list.Add(Btn2);
                     break;
 
+                case "three":
+                case "right":
+                case "third":    
                 case "3":
                     list.Add(Btn3);
                     break;
 
+                case "screen":
+                case "op":
+                case "gate":
+                case "logic gate":
                 case "operator":
                     list.Add(ScreenBtn);
                     break;
