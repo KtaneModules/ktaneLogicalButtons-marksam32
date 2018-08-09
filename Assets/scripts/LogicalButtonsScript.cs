@@ -100,8 +100,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
             if (!this.HasSolution)
             {
-                Module.HandleStrike();
-                this.InitLogic();
+                this.HandleButtonPressWithNoSolution(this.buttons[0]);
             }
             else
             {
@@ -123,8 +122,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn2.transform);
             if (!this.HasSolution)
             {
-                Module.HandleStrike();
-                this.InitLogic();
+                this.HandleButtonPressWithNoSolution(this.buttons[1]);
             }
             else
             {
@@ -147,8 +145,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn3.transform);
             if (!this.HasSolution)
             {
-                Module.HandleStrike();
-                this.InitLogic();
+                this.HandleButtonPressWithNoSolution(this.buttons[2]);
             }
             else
             {
@@ -176,7 +173,7 @@ public class LogicalButtonsScript : MonoBehaviour {
             }
             else
             {
-                this.gateOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnitRandom.Range(0, 6)]);
+                this.gateOperator = ChangeLogicalGateOperator(this.gateOperator);
                 this.helper = new LogicalButtonsHelper(this.buttons, this.gateOperator);
                 this.solution = this.helper.SolveOrder(this.stage);
                 OperatorTxt.text = this.gateOperator.Name;
@@ -187,6 +184,24 @@ public class LogicalButtonsScript : MonoBehaviour {
 
             return false;
         };
+    }
+
+    private static ILogicalGateOperator ChangeLogicalGateOperator(ILogicalGateOperator currentOperator)
+    {
+        var newOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnitRandom.Range(0, 6)]);
+        while (currentOperator.Name == newOperator.Name)
+        {
+            newOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnitRandom.Range(0, 6)]);
+        }
+
+        return newOperator;
+    }
+
+    private void HandleButtonPressWithNoSolution(LogicalButton button)
+    {
+        Debug.LogFormat("[Logical Buttons #{1}] Pressed incorrect button {0}, expected screen button. Strike!", button.Index + 1, this._moduleId);
+        Module.HandleStrike();
+        this.InitLogic();
     }
 
     private void InitLogic()
@@ -302,7 +317,8 @@ public class LogicalButtonsScript : MonoBehaviour {
         {
             ColorBlindIndicatorTop.gameObject.SetActive(true);
             ColorBlindIndicatorLeft.gameObject.SetActive(true);
-            ColorBlindIndicatorRight.gameObject.SetActive(true);          
+            ColorBlindIndicatorRight.gameObject.SetActive(true);
+            return new KMSelectable[0];
         }
 
         if (pieces[0] != "press" || pieces.Length < 2 || pieces.Length != pieces.Distinct().Count())
