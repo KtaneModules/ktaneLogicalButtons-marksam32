@@ -298,11 +298,8 @@ public class LogicalButtonsScript : MonoBehaviour {
             Debug.LogFormat("[Logical Buttons #{0}] Button {1}: {2}", this._moduleId, button.Index + 1, this.helper.DebugStringButtons(button.Index, this.stage));
         }
 
-        Debug.LogFormat("[Logical Buttons #{0}] Buttons should be pressed in the order: {1}.", this._moduleId, this.helper.DebugOrderString(this.stage));
-    }
-
-  
-
+        Debug.LogFormat("[Logical Buttons #{0}] Order gain: {1}.", this._moduleId, this.helper.DebugOrderString(this.stage));
+    } 
 
     // Twitch plays:
 
