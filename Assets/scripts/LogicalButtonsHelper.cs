@@ -1,9 +1,6 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class LogicalButtonsHelper 
 {
@@ -40,6 +37,19 @@ public class LogicalButtonsHelper
         //);
 
         return result;      
+    }
+
+    // Buttons are numbered in 'reading order' so clockwise means subtracting.
+    public static int NextIndexInClocwiseOrder(int index)
+    {
+        var nextIndex = index - 1;
+        return (nextIndex < 0) ? 2 : nextIndex;
+    }
+
+    public static int NextIndexInCounterClocwiseOrder(int index)
+    {
+        var nextIndex = index + 1;
+        return (nextIndex > 2) ? 0 : nextIndex;
     }
 
     public string DebugStringButtons(int index, int stage)
@@ -99,7 +109,7 @@ public class LogicalButtonsHelper
             case ButtonColor.Blue:
                 return ColorLogic.IsBlueConditionMet(this.buttons[otherIndexes[0]], this.buttons[otherIndexes[1]]);
             case ButtonColor.Green:
-                var nextIndex = this.NextIndexInClocwiseOrder(index);
+                var nextIndex = NextIndexInClocwiseOrder(index);
                 return ColorLogic.IsGreenConditionMet(this.buttons[nextIndex]);
             case ButtonColor.Yellow:
                 return ColorLogic.IsYellowConditionMet(button);
@@ -151,20 +161,4 @@ public class LogicalButtonsHelper
     {
         return this.idx.Where(x => x != index).OrderBy(x => x).ToArray();
     }
-
-    // Buttons are numbered in 'reading order' so clockwise means subtracting.
-    private int NextIndexInClocwiseOrder(int index)
-    {
-        var nextIndex = index - 1;
-        return (nextIndex < 0) ? 2 : nextIndex;
-    }
-
-    private int NextIndexInCounterClocwiseOrder(int index)
-    {
-        var nextIndex = index + 1;
-        return (nextIndex > 2) ? 0 : nextIndex;
-    }
-
-
-
 }

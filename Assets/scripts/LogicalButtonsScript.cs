@@ -212,10 +212,10 @@ public class LogicalButtonsScript : MonoBehaviour {
         }
 
         // Debuging purposes
-        //this.buttons[0] = new LogicalButton(0, ButtonColor.Green, Constants.NoString);
-        //this.buttons[1] = new LogicalButton(1, ButtonColor.Grey, Constants.WaitString);
-        //this.buttons[2] = new LogicalButton(2, ButtonColor.Purple, Constants.WaitString);
-        //this.gateOperator = LogicalGateOperatorFactory.Create(Constants.XorOperatorString);
+        //this.buttons[0] = new LogicalButton(0, ButtonColor.Purple, Constants.HmmmString);
+        //this.buttons[1] = new LogicalButton(1, ButtonColor.Green, Constants.WrongString);
+        //this.buttons[2] = new LogicalButton(2, ButtonColor.Yellow, Constants.NoString);
+        //this.gateOperator = LogicalGateOperatorFactory.Create(Constants.NorOperatorString);
         //this.stage = 3;
 
         this.pressCount = 0;

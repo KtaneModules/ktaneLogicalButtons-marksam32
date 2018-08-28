@@ -44,7 +44,8 @@ public static class LabelLogic
             case ButtonColor.Blue:
                 return !ColorLogic.IsBlueConditionMet(otherButtons.First(), otherButtons.Last());
             case ButtonColor.Green:
-                return !ColorLogic.IsGreenConditionMet(otherButtons.Last());
+                var nextIndex = LogicalButtonsHelper.NextIndexInClocwiseOrder(currentIndex);
+                return !ColorLogic.IsGreenConditionMet(buttons[nextIndex]);
             case ButtonColor.Cyan:
                 return !ColorLogic.IsCyanConditionMet(button);
             case ButtonColor.Yellow:
