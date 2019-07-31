@@ -212,11 +212,11 @@ public class LogicalButtonsScript : MonoBehaviour {
         }
 
         // Debuging purposes
-        //this.buttons[0] = new LogicalButton(0, ButtonColor.Purple, Constants.HmmmString);
-        //this.buttons[1] = new LogicalButton(1, ButtonColor.Green, Constants.WrongString);
-        //this.buttons[2] = new LogicalButton(2, ButtonColor.Yellow, Constants.NoString);
-        //this.gateOperator = LogicalGateOperatorFactory.Create(Constants.NorOperatorString);
-        //this.stage = 3;
+        this.buttons[0] = new LogicalButton(0, ButtonColor.Orange, Constants.ColorString);
+        this.buttons[1] = new LogicalButton(1, ButtonColor.Grey, Constants.LogicString);
+        this.buttons[2] = new LogicalButton(2, ButtonColor.Grey, Constants.LogicString);
+        this.gateOperator = LogicalGateOperatorFactory.Create(Constants.XorOperatorString);
+        this.stage = 3;
 
         this.pressCount = 0;
         this.gateOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnityEngine.Random.Range(0, 6)]);
@@ -327,8 +327,7 @@ public class LogicalButtonsScript : MonoBehaviour {
         {
             return null;
         }
-
-        
+  
         var list = new List<KMSelectable>();
         for (int i = 1; i < pieces.Length; i++)
         {
