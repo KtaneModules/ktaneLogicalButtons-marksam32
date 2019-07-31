@@ -2934,6 +2934,12 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 56ebec93c531b314180c992b72c21373, type: 2}
   LightOffMat: {fileID: 2100000, guid: 16ee53b35e4861242a800dc4599ac261, type: 2}
   LightOnMat: {fileID: 2100000, guid: a3b7bca85b3cafd49a1048cc672ecd2e, type: 2}
+  BorderOffMat: {fileID: 2100000, guid: 00e7776cfa74eab4eb177fed99e6ce9f, type: 2}
+  BorderOnMat: {fileID: 2100000, guid: ea1b4b96b7aebf740a228ddbe06ba79b, type: 2}
+  Borders:
+  - {fileID: 23852058934916056}
+  - {fileID: 23025921841694872}
+  - {fileID: 23883155676000170}
   ColorBlindIndicatorTop: {fileID: 102349935854205800}
   ColorBlindIndicatorLeft: {fileID: 102872573167401564}
   ColorBlindIndicatorRight: {fileID: 102295768762353720}

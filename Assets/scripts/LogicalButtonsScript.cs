@@ -30,6 +30,9 @@ public class LogicalButtonsScript : MonoBehaviour {
     public Material[] materials;
     public Material LightOffMat;
     public Material LightOnMat;
+    public Material BorderOffMat;
+    public Material BorderOnMat;
+    public MeshRenderer[] Borders;
 
     // Other:
     private static int _moduleIdCounter = 1;
@@ -211,12 +214,12 @@ public class LogicalButtonsScript : MonoBehaviour {
             this.buttons[i] = new LogicalButton(i, Constants.ButtonColors[UnitRandom.Range(0, 9)], Constants.WordStrings[UnitRandom.Range(0, 9)]);
         }
 
-        // Debuging purposes
-        this.buttons[0] = new LogicalButton(0, ButtonColor.Orange, Constants.ColorString);
-        this.buttons[1] = new LogicalButton(1, ButtonColor.Grey, Constants.LogicString);
-        this.buttons[2] = new LogicalButton(2, ButtonColor.Grey, Constants.LogicString);
-        this.gateOperator = LogicalGateOperatorFactory.Create(Constants.XorOperatorString);
-        this.stage = 3;
+        //// Debuging purposes
+        //this.buttons[0] = new LogicalButton(0, ButtonColor.Orange, Constants.ColorString);
+        //this.buttons[1] = new LogicalButton(1, ButtonColor.Grey, Constants.LogicString);
+        //this.buttons[2] = new LogicalButton(2, ButtonColor.Grey, Constants.LogicString);
+        //this.gateOperator = LogicalGateOperatorFactory.Create(Constants.XorOperatorString);
+        //this.stage = 3;
 
         this.pressCount = 0;
         this.gateOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnityEngine.Random.Range(0, 6)]);
@@ -260,6 +263,7 @@ public class LogicalButtonsScript : MonoBehaviour {
         }
 
         button.IsPressed = true;
+        Borders[button.Index].material = BorderOnMat;
         Debug.LogFormat("[Logical Buttons #{0}] Pressed correct button {1}.", this._moduleId, button.Index + 1);
         if (this.pressCount == this.solution.Count)
         {
@@ -279,11 +283,19 @@ public class LogicalButtonsScript : MonoBehaviour {
                 Btn1Renderer.sharedMaterial = materials[2];
                 Btn2Renderer.sharedMaterial = materials[2];
                 Btn3Renderer.sharedMaterial = materials[2];
+                for(int i = 0; i < Borders.Length; i++)
+                {
+                    Borders[i].material = BorderOffMat;
+                }
                 OperatorTxt.text = correct[UnitRandom.Range(0, correct.Length)];
             }
             else
             {
                 Debug.LogFormat("[Logical Buttons #{0}] Completed stage {1}.", this._moduleId, this.stage);
+                for (int i = 0; i < Borders.Length; i++)
+                {
+                    Borders[i].material = BorderOffMat;
+                }
                 this.stage++;
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, Module.transform);
                 this.InitLogic();
