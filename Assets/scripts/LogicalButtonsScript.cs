@@ -259,6 +259,10 @@ public class LogicalButtonsScript : MonoBehaviour {
             Debug.LogFormat("[Logical Buttons #{2}] Pressed incorrect button {0}, expected button {1}. Strike!", button.Index + 1, this.solution[this.pressCount - 1], this._moduleId);
             this.InitLogic();
             Module.HandleStrike();
+            for (int i = 0; i < Borders.Length; i++)
+            {
+                Borders[i].material = BorderOffMat;
+            }
             return;
         }
 
