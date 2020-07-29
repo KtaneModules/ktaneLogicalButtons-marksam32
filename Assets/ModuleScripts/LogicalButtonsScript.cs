@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnitRandom = UnityEngine.Random;
 
@@ -28,11 +27,11 @@ public class LogicalButtonsScript : MonoBehaviour {
     public MeshRenderer Btn3Renderer;
     public MeshRenderer[] StageLights;
     public Material[] materials;
-    public Material LightOffMat;
     public Material LightOnMat;
     public Material BorderOffMat;
     public Material BorderOnMat;
     public MeshRenderer[] Borders;
+    public Light[] Lights;
 
     // Other:
     private static int _moduleIdCounter = 1;
@@ -50,7 +49,7 @@ public class LogicalButtonsScript : MonoBehaviour {
 
     private int pressCount;
 
-    string[] correct =
+    private static readonly List<string> correct = new List<string>
     {
         "GOOD",
         "NEAT",
@@ -80,6 +79,9 @@ public class LogicalButtonsScript : MonoBehaviour {
     void Start ()
     {
         _moduleId = _moduleIdCounter++;
+        var scalar = transform.lossyScale.x;
+        for (var i = 0; i < Lights.Length; i++)
+            Lights[i].range *= scalar;
         Module.OnActivate += Activate;
     }
 	
@@ -272,6 +274,7 @@ public class LogicalButtonsScript : MonoBehaviour {
         if (this.pressCount == this.solution.Count)
         {
             StageLights[this.stage - 1].sharedMaterial = LightOnMat;
+            Lights[this.stage - 1].enabled = true;
             if (this.stage == 3)
             {
                 Debug.LogFormat("[Logical Buttons #{0}] All 3 stages passed. Module solved.", this._moduleId);
@@ -291,7 +294,7 @@ public class LogicalButtonsScript : MonoBehaviour {
                 {
                     Borders[i].material = BorderOffMat;
                 }
-                OperatorTxt.text = correct[UnitRandom.Range(0, correct.Length)];
+                OperatorTxt.text = correct[UnitRandom.Range(0, correct.Count)];
             }
             else
             {
