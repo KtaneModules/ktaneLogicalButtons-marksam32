@@ -4,7 +4,8 @@ using System.Linq;
 using UnityEngine;
 using UnitRandom = UnityEngine.Random;
 
-public class LogicalButtonsScript : MonoBehaviour {
+public class LogicalButtonsScript : MonoBehaviour 
+{
 
     // Module stuff:
     public KMBombModule Module;
@@ -322,7 +323,7 @@ public class LogicalButtonsScript : MonoBehaviour {
 
     // Twitch plays:
 
-    public string TwitchHelpMessage = "To press buttons, use !{0} press 1 2 3 or !{0} press 1 2 or !{0} press 1. To press the operator screen, use !{0} press operator. Enable colorblind mode using !{0} colorblind.";
+    public const string TwitchHelpMessage = "To press buttons, use !{0} press 1 2 3 or !{0} press 1 2 or !{0} press 1. To press the operator screen, use !{0} press operator. Enable colorblind mode using !{0} colorblind.";
 
     internal KMSelectable[] ProcessTwitchCommand(string command)
     {

@@ -3144,8 +3144,6 @@ MonoBehaviour:
   ColorBlindIndicatorTop: {fileID: 102349935854205800}
   ColorBlindIndicatorLeft: {fileID: 102872573167401564}
   ColorBlindIndicatorRight: {fileID: 102295768762353720}
-  TwitchHelpMessage: To press buttons, use !{0} press 1 2 3 or !{0} press 1 2 or !{0}
-    press 1. To press the operator screen, use !{0} press operator
 --- !u!114 &114797318385408942
 MonoBehaviour:
   m_ObjectHideFlags: 1
