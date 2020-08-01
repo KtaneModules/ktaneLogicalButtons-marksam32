@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnitRandom = UnityEngine.Random;
@@ -57,7 +58,8 @@ public class LogicalButtonsScript : MonoBehaviour
         "NICE",
         "OKAY",
         "COOL",
-        "YES"
+        "YES",
+        "YEET"
     };
 
     //Color Blind:
@@ -68,6 +70,9 @@ public class LogicalButtonsScript : MonoBehaviour
 
     void Activate()
     {
+        var scalar = transform.lossyScale.x;
+        for (var i = 0; i < Lights.Length; i++)
+            Lights[i].range *= scalar;
         this.stage = 1;
         this.InitLogic();
         this.InitButtons();
@@ -80,30 +85,21 @@ public class LogicalButtonsScript : MonoBehaviour
     void Start ()
     {
         _moduleId = _moduleIdCounter++;
-        var scalar = transform.lossyScale.x;
-        for (var i = 0; i < Lights.Length; i++)
-            Lights[i].range *= scalar;
         Module.OnActivate += Activate;
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+    
     private void InitButtons()
     {
         Btn1.OnInteract += delegate
         {
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
+            Btn1.AddInteractionPunch(.1f);
+            Btn1.GetComponentInParent<Animator>().Play("ButtonPress");
             if (this.isSolved)
             {
-                Btn1.AddInteractionPunch();
-                Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
                 return false;
             }
-            Btn1.AddInteractionPunch();
             
-            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
             if (!this.HasSolution)
             {
                 this.HandleButtonPressWithNoSolution(this.buttons[0]);
@@ -118,14 +114,13 @@ public class LogicalButtonsScript : MonoBehaviour
 
         Btn2.OnInteract += delegate
         {
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
+            Btn2.AddInteractionPunch(.1f);
+            Btn2.GetComponentInParent<Animator>().Play("ButtonPress");
             if (this.isSolved)
             {
-                Btn1.AddInteractionPunch();
-                Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
                 return false;
             }
-            Btn2.AddInteractionPunch();
-            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn2.transform);
             if (!this.HasSolution)
             {
                 this.HandleButtonPressWithNoSolution(this.buttons[1]);
@@ -141,14 +136,13 @@ public class LogicalButtonsScript : MonoBehaviour
 
         Btn3.OnInteract += delegate
         {
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
+            Btn3.AddInteractionPunch(.1f);
+            Btn3.GetComponentInParent<Animator>().Play("ButtonPress");
             if (this.isSolved)
             {
-                Btn1.AddInteractionPunch();
-                Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
                 return false;
             }
-            Btn3.AddInteractionPunch();
-            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn3.transform);
             if (!this.HasSolution)
             {
                 this.HandleButtonPressWithNoSolution(this.buttons[2]);
@@ -160,6 +154,22 @@ public class LogicalButtonsScript : MonoBehaviour
 
             return false;
         };
+        
+        Btn1.OnInteractEnded += delegate
+        {
+            Btn1.GetComponentInParent<Animator>().Play("ButtonRelease");
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.BigButtonPress, Btn1.transform);
+        };
+        Btn2.OnInteractEnded += delegate
+        {
+            Btn2.GetComponentInParent<Animator>().Play("ButtonRelease");
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.BigButtonPress, Btn2.transform);
+        };
+        Btn3.OnInteractEnded += delegate
+        {
+            Btn3.GetComponentInParent<Animator>().Play("ButtonRelease");
+            Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.BigButtonPress, Btn3.transform);
+        };
 
         ScreenBtn.OnInteract += delegate
         {
@@ -169,7 +179,7 @@ public class LogicalButtonsScript : MonoBehaviour
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, Btn1.transform);
                 return false;
             }
-            ScreenBtn.AddInteractionPunch();
+            ScreenBtn.AddInteractionPunch(.5f);
             Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, ScreenBtn.transform);
             if (this.HasSolution)
             {
@@ -278,6 +288,7 @@ public class LogicalButtonsScript : MonoBehaviour
             Lights[this.stage - 1].enabled = true;
             if (this.stage == 3)
             {
+                stage++;
                 Debug.LogFormat("[Logical Buttons #{0}] All 3 stages passed. Module solved.", this._moduleId);
                 this.isSolved = true;       
                 Module.HandlePass();
@@ -325,30 +336,30 @@ public class LogicalButtonsScript : MonoBehaviour
 
     public const string TwitchHelpMessage = "To press buttons, use !{0} press 1 2 3 or !{0} press 1 2 or !{0} press 1. To press the operator screen, use !{0} press operator. Enable colorblind mode using !{0} colorblind.";
 
-    internal KMSelectable[] ProcessTwitchCommand(string command)
+    internal IEnumerator ProcessTwitchCommand(string command)
     {
         command = command.ToLowerInvariant().Trim();
         var pieces = command.Split(new[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
         if (command.Equals("colorblind"))
         {
+            yield return null;
             ColorBlindIndicatorTop.gameObject.SetActive(true);
             ColorBlindIndicatorLeft.gameObject.SetActive(true);
             ColorBlindIndicatorRight.gameObject.SetActive(true);
-            return new KMSelectable[0];
+            yield break;
         }
 
         if (pieces[0] != "press" || pieces.Length < 2 || pieces.Length != pieces.Distinct().Count())
         {
-            return null;
+            yield break;
         }
 
         if ((pieces.Contains("operator") && pieces.Length > 2) || pieces.Length > 4)
         {
-            return null;
+            yield break;
         }
-  
-        var list = new List<KMSelectable>();
+        
         for (int i = 1; i < pieces.Length; i++)
         {
             switch (pieces[i])
@@ -357,21 +368,32 @@ public class LogicalButtonsScript : MonoBehaviour
                 case "top":
                 case "first":
                 case "1":
-                    list.Add(Btn1);
+                    yield return null;
+                    Btn1.OnInteract();
+                    yield return new WaitForSeconds(.1f);
+                    Btn1.OnInteractEnded();
+                    yield return new WaitForSeconds(.2f);
                     break;
 
                 case "two":
                 case "left":
                 case "second":                
                 case "2":
-                    list.Add(Btn2);
+                    yield return null;
+                    Btn2.OnInteract();
+                    yield return new WaitForSeconds(.1f);
+                    Btn2.OnInteractEnded();
+                    yield return new WaitForSeconds(.2f);
                     break;
-
                 case "three":
                 case "right":
                 case "third":    
                 case "3":
-                    list.Add(Btn3);
+                    yield return null;
+                    Btn3.OnInteract();
+                    yield return new WaitForSeconds(.1f);
+                    Btn3.OnInteractEnded();
+                    yield return new WaitForSeconds(.2f);
                     break;
 
                 case "screen":
@@ -379,14 +401,57 @@ public class LogicalButtonsScript : MonoBehaviour
                 case "gate":
                 case "logic gate":
                 case "operator":
-                    list.Add(ScreenBtn);
+                    yield return null;
+                    ScreenBtn.OnInteract();
+                    yield return new WaitForSeconds(.2f);
                     break;
-
                 default:
-                    return null;
+                    yield break;
             }
         }
-        return list.ToArray();
+        yield break;
+    }
+
+    public IEnumerator TwitchHandleForcedSolve()
+    {
+        for (var i = stage; i < 4; ++i)
+        {
+            while (!HasSolution)
+            {
+                ScreenBtn.OnInteract();
+                yield return new WaitForSeconds(.2f);
+            }
+            
+            while (i == stage)
+            {
+                var button = solution[pressCount];
+                switch (button - 1)
+                {
+                    case 0:
+                        Btn1.OnInteract();
+                        yield return new WaitForSeconds(.1f);
+                        Btn1.OnInteractEnded();
+                        yield return new WaitForSeconds(.1f);
+                        break;
+                    case 1:
+                        Btn2.OnInteract();
+                        yield return new WaitForSeconds(.1f);
+                        Btn2.OnInteractEnded();
+                        yield return new WaitForSeconds(.1f);
+                        break;
+                    case 2:
+                        Btn3.OnInteract();
+                        yield return new WaitForSeconds(.1f);
+                        Btn3.OnInteractEnded();
+                        yield return new WaitForSeconds(.1f);
+                        break;
+                    default:
+                        Debug.LogFormat(button.ToString());
+                        throw new Exception();
+                }
+            }
+            yield return true;
+        }
     }
 }
 
