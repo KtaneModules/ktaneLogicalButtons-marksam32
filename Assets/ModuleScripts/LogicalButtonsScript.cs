@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnitRandom = UnityEngine.Random;
+using rnd = UnityEngine.Random;
 
 public class LogicalButtonsScript : MonoBehaviour 
 {
@@ -73,9 +73,6 @@ public class LogicalButtonsScript : MonoBehaviour
         var scalar = transform.lossyScale.x;
         for (var i = 0; i < Lights.Length; i++)
             Lights[i].range *= scalar;
-        this.stage = 1;
-        this.InitLogic();
-        this.InitButtons();
         ColorBlindIndicatorLeft.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
         ColorBlindIndicatorRight.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
         ColorBlindIndicatorTop.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
@@ -85,6 +82,9 @@ public class LogicalButtonsScript : MonoBehaviour
     void Start ()
     {
         _moduleId = _moduleIdCounter++;
+        this.stage = 1;
+        this.InitLogic();
+        this.InitButtons();
         Module.OnActivate += Activate;
     }
     
@@ -204,10 +204,10 @@ public class LogicalButtonsScript : MonoBehaviour
 
     private static ILogicalGateOperator ChangeLogicalGateOperator(ILogicalGateOperator currentOperator)
     {
-        var newOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnitRandom.Range(0, 6)]);
+        var newOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[rnd.Range(0, 6)]);
         while (currentOperator.Name == newOperator.Name)
         {
-            newOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnitRandom.Range(0, 6)]);
+            newOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[rnd.Range(0, 6)]);
         }
 
         return newOperator;
@@ -224,7 +224,7 @@ public class LogicalButtonsScript : MonoBehaviour
     {
         for (var i = 0; i < 3; i++)
         {
-            this.buttons[i] = new LogicalButton(i, Constants.ButtonColors[UnitRandom.Range(0, 9)], Constants.WordStrings[UnitRandom.Range(0, 9)]);
+            this.buttons[i] = new LogicalButton(i, Constants.ButtonColors[rnd.Range(0, 9)], Constants.WordStrings[rnd.Range(0, 9)]);
         }
 
         //// Debuging purposes
@@ -235,12 +235,12 @@ public class LogicalButtonsScript : MonoBehaviour
         //this.stage = 3;
 
         this.pressCount = 0;
-        this.gateOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[UnityEngine.Random.Range(0, 6)]);
+        this.gateOperator = LogicalGateOperatorFactory.Create(Constants.GateStrings[rnd.Range(0, 6)]);
         this.helper = new LogicalButtonsHelper(this.buttons, this.gateOperator);
         this.solution = this.helper.SolveOrder(this.stage);
 
         OperatorTxt.text = this.gateOperator.Name;
-
+        
         Btn1Text.text = buttons[0].Label;
         Btn2Text.text = buttons[1].Label;
         Btn3Text.text = buttons[2].Label;
@@ -306,7 +306,7 @@ public class LogicalButtonsScript : MonoBehaviour
                 {
                     Borders[i].material = BorderOffMat;
                 }
-                OperatorTxt.text = correct[UnitRandom.Range(0, correct.Count)];
+                OperatorTxt.text = correct[rnd.Range(0, correct.Count)];
             }
             else
             {
