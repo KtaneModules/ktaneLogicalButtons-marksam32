@@ -39,9 +39,9 @@ public class LogicalButtonsScript : MonoBehaviour
     private static int _moduleIdCounter = 1;
     private int _moduleId;
     private int stage;
-    private bool isSolved = false;
+    private bool isSolved;
 
-    private LogicalButton[] buttons = new LogicalButton[3];
+    private readonly LogicalButton[] buttons = new LogicalButton[3];
 
     private ILogicalGateOperator gateOperator;
 
@@ -71,8 +71,8 @@ public class LogicalButtonsScript : MonoBehaviour
     void Activate()
     {
         var scalar = transform.lossyScale.x;
-        for (var i = 0; i < Lights.Length; i++)
-            Lights[i].range *= scalar;
+        foreach (var t in Lights)
+            t.range *= scalar;
         ColorBlindIndicatorLeft.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
         ColorBlindIndicatorRight.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
         ColorBlindIndicatorTop.gameObject.SetActive(GetComponent<KMColorblindMode>().ColorblindModeActive);
@@ -195,7 +195,6 @@ public class LogicalButtonsScript : MonoBehaviour
                 OperatorTxt.text = this.gateOperator.Name;
                 Debug.LogFormat("[Logical Buttons #{0}] Pressing operator button, new answer is:", _moduleId);
                 this.DebugMessage();
-                
             }
 
             return false;
@@ -272,9 +271,9 @@ public class LogicalButtonsScript : MonoBehaviour
             Debug.LogFormat("[Logical Buttons #{2}] Pressed incorrect button {0}, expected button {1}. Strike!", button.Index + 1, this.solution[this.pressCount - 1], this._moduleId);
             this.InitLogic();
             Module.HandleStrike();
-            for (int i = 0; i < Borders.Length; i++)
+            foreach (var border in Borders)
             {
-                Borders[i].material = BorderOffMat;
+                border.material = BorderOffMat;
             }
             return;
         }
@@ -302,18 +301,18 @@ public class LogicalButtonsScript : MonoBehaviour
                 Btn1Renderer.sharedMaterial = materials[2];
                 Btn2Renderer.sharedMaterial = materials[2];
                 Btn3Renderer.sharedMaterial = materials[2];
-                for(int i = 0; i < Borders.Length; i++)
+                foreach (var border in Borders)
                 {
-                    Borders[i].material = BorderOffMat;
+                    border.material = BorderOffMat;
                 }
                 OperatorTxt.text = correct[rnd.Range(0, correct.Count)];
             }
             else
             {
                 Debug.LogFormat("[Logical Buttons #{0}] Completed stage {1}.", this._moduleId, this.stage);
-                for (int i = 0; i < Borders.Length; i++)
+                foreach (var border in Borders)
                 {
-                    Borders[i].material = BorderOffMat;
+                    border.material = BorderOffMat;
                 }
                 this.stage++;
                 Audio.PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.CorrectChime, Module.transform);
@@ -409,7 +408,6 @@ public class LogicalButtonsScript : MonoBehaviour
                     yield break;
             }
         }
-        yield break;
     }
 
     public IEnumerator TwitchHandleForcedSolve()

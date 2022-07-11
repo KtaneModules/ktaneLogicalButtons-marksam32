@@ -14,12 +14,14 @@ public class LogicalButton
     }
     public string Label
     {
-        get; set;
+        get;
+        private set;
     }
 
     public ButtonColor Color
     {
-        get; set;
+        get;
+        private set;
     }
 
     public bool IsPressed

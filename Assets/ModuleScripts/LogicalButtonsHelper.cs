@@ -4,8 +4,7 @@ using System.Linq;
 
 public class LogicalButtonsHelper 
 {
-
-    private int[] idx = { 0, 1, 2 };
+    private readonly int[] idx = { 0, 1, 2 };
 
     private static readonly IList<int>[,] pressOrders = new IList<int>[,]
     {
@@ -13,9 +12,9 @@ public class LogicalButtonsHelper
         { new List<int> { 3, 1, 2 }, new List<int> { 2, 3, 1 }, new List<int> { 1, 3, 2 } }
     };
 
-    private LogicalButton[] buttons;
+    private readonly LogicalButton[] buttons;
 
-    private ILogicalGateOperator gateOperator;
+    private readonly ILogicalGateOperator gateOperator;
     
     public LogicalButtonsHelper(LogicalButton[] buttons, ILogicalGateOperator gateOperator)
     {
@@ -84,8 +83,6 @@ public class LogicalButtonsHelper
 
     private bool Solve(int index, int stage)
     {
-        var colorSolve = this.ColorSolve(index);
-        var labelSolve = this.LabelSolve(index, stage);
         //Debug.LogFormat("Solve for stage {0} and index {1} => Button {2}: Color {3} {4} Label {5} == {6}",
         //    stage, index,
         //    index + 1, colorSolve, this.gateOperator.Name, labelSolve, 
